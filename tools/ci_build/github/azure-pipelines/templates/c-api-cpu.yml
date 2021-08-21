@@ -201,7 +201,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy nuget packages to: $(Build.ArtifactStagingDirectory)'
     inputs:
-      SourceFolder: '$(Build.BinariesDirectory)\RelWithDebInfo\RelWithDebInfo\nuget-artifacts'
+      SourceFolder: '$(Build.BinariesDirectory)\RelWithDebInfo\RelWithDebInfo'
       Contents: |
         '*.nupkg'
         '*.snupkg'
@@ -211,9 +211,7 @@ jobs:
     displayName: 'Copy nuget packages to: $(Build.ArtifactStagingDirectory)'
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)\csharp\src\Microsoft.ML.OnnxRuntime\bin\RelWithDebInfo'
-      Contents: |
-        '*.nupkg'
-        '*.snupkg'
+      Contents: '*.nupkg'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - template: esrp_nuget.yml
