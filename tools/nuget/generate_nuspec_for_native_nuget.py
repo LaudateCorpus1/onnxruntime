@@ -375,7 +375,7 @@ def generate_files(list, args):
         if nuget_artifacts_dir.exists():
             for child in nuget_artifacts_dir.iterdir():
                 for cpu_arch in ['x86', 'x64', 'arm', 'arm64']:
-                    if child.name == 'onnxruntime-win-%s' % arch:
+                    if child.name == 'onnxruntime-win-%s' % cpu_arch:
                         files_list.append('<file src=' + '"' + child/'lib' / 'onnxruntime.dll' +
                                        ' target="runtimes/win-%s/native/onnxruntime.dll"/>' % cpu_arch)
                         files_list.append('<file src=' + '"' + child/'lib' / 'onnxruntime.pdb' +
