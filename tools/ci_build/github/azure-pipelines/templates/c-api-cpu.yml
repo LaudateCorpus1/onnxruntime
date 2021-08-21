@@ -202,7 +202,9 @@ jobs:
     displayName: 'Copy nuget packages to: $(Build.ArtifactStagingDirectory)'
     inputs:
       SourceFolder: '$(Build.BinariesDirectory)\RelWithDebInfo\RelWithDebInfo\nuget-artifacts'
-      Contents: '*.nupkg'
+      Contents: |
+        '*.nupkg'
+        '*.snupkg'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - task: CopyFiles@2
