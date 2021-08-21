@@ -39,4 +39,3 @@ stages:
     enable_windows_cpu: ${{ parameters.enable_windows_cpu }}
     enable_windows_gpu: ${{ parameters.enable_windows_gpu }}
     enable_mac_cpu: ${{ parameters.enable_mac_cpu }}
-    enable_linux_arm: ${{ parameters.enable_linux_arm }}

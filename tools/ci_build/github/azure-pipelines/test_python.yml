@@ -1,0 +1,27 @@
+jobs:
+- template: templates/test_python_linux.yml
+  parameters:
+    ArtifactName: onnxruntime_linux_cpu_x86_64
+    OrtPythonPackageName: ort_nightly
+    PoolName: Linux-CPU
+    
+- template: templates/test_python_linux.yml
+  parameters:
+    ArtifactName: onnxruntime_linux_gpu_x86_64
+    OrtPythonPackageName: ort_nightly_gpu
+    PoolName: Onnxruntime-Linux-GPU
+    
+- template: templates/test_python_linux.yml
+  parameters:
+    ArtifactName: onnxruntime_linux_gpu_x86_64
+    OrtPythonPackageName: ort_nightly_gpu
+    PoolName: ubuntu-20.04	
+    UsePublicHostedPool: true
+    JobNameSuffix: '2'
+
+- template: templates/test_python_linux.yml
+  parameters:
+    ArtifactName: onnxruntime_mac
+    OrtPythonPackageName: ort_nightly
+    PoolName: macOS-10.15
+    UsePublicHostedPool: true

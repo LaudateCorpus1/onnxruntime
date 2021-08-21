@@ -71,7 +71,6 @@ jobs:
           artifactName: 'onnxruntime-linux-x64-gpu-$(OnnxRuntimeVersion)'
           artifactNameNoVersionString:  'onnxruntime-linux-x64-gpu'
           libraryName: 'libonnxruntime.so.$(OnnxRuntimeVersion)'
-          commitId: $(OnnxRuntimeGitCommitHash)
 
     - template: templates/component-governance-component-detection-steps.yml
       parameters :
@@ -409,9 +408,12 @@ jobs:
       arguments: '--configuration RelWithDebInfo -p:Platform="Any CPU" -p:OnnxRuntimeBuildDirectory="$(Build.BinariesDirectory)" -p:OrtPackageId=Microsoft.ML.OnnxRuntime.Gpu'
       workingDirectory: '$(Build.SourcesDirectory)\csharp'
 
-  #TODO: enable binskim
-  #- task: BinSkim@4
-  #  displayName: 'Run BinSkim'
+  # We can't enable this BinSkim task because some DLLs in the nuget package don't have symbols
+  # But we can't add all PDBs there. It will make the package over-sized.
+  # - task: BinSkim@4
+    # displayName: 'Run BinSkim'
+    # inputs:
+      # AnalyzeTargetGlob: '$(Build.ArtifactStagingDirectory)\**.dll;$(Build.ArtifactStagingDirectory)\**.exe;$(Build.ArtifactStagingDirectory)\**.so'
 
   - task: RoslynAnalyzers@2
     displayName: 'Run Roslyn Analyzers'

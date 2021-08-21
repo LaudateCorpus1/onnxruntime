@@ -31,7 +31,6 @@ jobs:
           artifactName: 'onnxruntime-linux-x64-gpu-tensorrt-$(OnnxRuntimeVersion)'
           artifactNameNoVersionString:  'onnxruntime-linux-x64-gpu-tensorrt'
           libraryName: 'libonnxruntime.so.$(OnnxRuntimeVersion)'
-          commitId: $(OnnxRuntimeGitCommitHash)
 
     - template: templates/component-governance-component-detection-steps.yml
       parameters :

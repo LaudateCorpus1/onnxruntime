@@ -60,7 +60,7 @@ def _build_package(args):
         build_dir_current_arch = os.path.join(intermediates_dir, sysroot + "_" + current_arch)
         build_command = base_build_command + [
             '--ios_sysroot=' + sysroot,
-            '--osx_arch=' + current_arch,
+            '--cmake_extra_defines CMAKE_OSX_ARCHITECTURES=' + current_arch,
             '--build_dir=' + build_dir_current_arch
         ]
 

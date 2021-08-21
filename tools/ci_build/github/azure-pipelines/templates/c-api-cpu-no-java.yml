@@ -53,6 +53,13 @@ jobs:
         DockerBuildArgs: "--build-arg BUILD_UID=$( id -u )"
         Repository: onnxruntimecpubuild
 
+    - script: |
+       set -e -x       
+       mkdir $(Build.ArtifactStagingDirectory)/testdata
+       cp $(Build.BinariesDirectory)/Release/libcustom_op_library.so* $(Build.ArtifactStagingDirectory)/testdata 
+       ls -al $(Build.ArtifactStagingDirectory)
+      displayName: 'Create Artifacts'
+
     - task: CmdLine@2
       inputs:
         script: |
@@ -62,19 +69,6 @@ jobs:
           /onnxruntime_src/tools/ci_build/build.py --build_dir /build --config Release \
           --skip_submodule_sync  --parallel --build_shared_lib ${{ parameters.AdditionalBuildFlags }} && cd /build/Release && make install DESTDIR=/build/linux-x64"
         workingDirectory: $(Build.SourcesDirectory)
-
-    - script: |
-       set -e -x       
-       mkdir $(Build.ArtifactStagingDirectory)/testdata
-       cp $(Build.BinariesDirectory)/Release/libcustom_op_library.so* $(Build.ArtifactStagingDirectory)/testdata 
-       ls -al $(Build.ArtifactStagingDirectory)
-      displayName: 'Create Artifacts'
-
-    - task: PublishPipelineArtifact@0
-      displayName: 'Publish Pipeline Artifact'
-      inputs:
-        artifactName: 'drop-linux'
-        targetPath: '$(Build.ArtifactStagingDirectory)'
 
     - template: c-api-artifacts-package-and-publish-steps-posix.yml
       parameters:
@@ -95,7 +89,7 @@ jobs:
   workspace:
     clean: all
   variables:
-    MACOSX_DEPLOYMENT_TARGET: '10.13'
+    MACOSX_DEPLOYMENT_TARGET: '10.14'
   pool: 
     vmImage: 'macOS-10.15'
   timeoutInMinutes:  120
@@ -117,6 +111,13 @@ jobs:
         sudo xcode-select --switch /Applications/Xcode_12.4.app/Contents/Developer        
         python3 $(Build.SourcesDirectory)/tools/ci_build/build.py ${{ parameters.AdditionalBuildFlags }} --build_dir $(Build.BinariesDirectory) --skip_submodule_sync --parallel --build_shared_lib --config Release
       displayName: 'Build and Test MacOS'
+      
+    - script: |
+       set -e -x       
+       mkdir $(Build.ArtifactStagingDirectory)/testdata
+       cp $(Build.BinariesDirectory)/Release/libcustom_op_library.dylib $(Build.ArtifactStagingDirectory)/testdata
+      displayName: 'Copy custom op data'
+
     - template: c-api-artifacts-package-and-publish-steps-posix.yml
       parameters:
           buildConfig: 'Release'
@@ -124,18 +125,6 @@ jobs:
           artifactNameNoVersionString: 'onnxruntime-osx-x64'
           libraryName: 'libonnxruntime.$(OnnxRuntimeVersion).dylib'
           commitId: $(OnnxRuntimeGitCommitHash)
-
-    - script: |
-       set -e -x       
-       mkdir $(Build.ArtifactStagingDirectory)/testdata
-       cp $(Build.BinariesDirectory)/Release/libcustom_op_library.dylib $(Build.ArtifactStagingDirectory)/testdata
-      displayName: 'Create Artifacts'
-
-    - task: PublishPipelineArtifact@0
-      displayName: 'Publish Pipeline Artifact'
-      inputs:
-        artifactName: 'drop-osx'
-        targetPath: '$(Build.ArtifactStagingDirectory)'
 
     - template: component-governance-component-detection-steps.yml
       parameters :
@@ -242,7 +231,7 @@ jobs:
   - task: DownloadPipelineArtifact@0
     displayName: 'Download Pipeline Artifact - NuGet'
     inputs:
-      artifactName: 'onnxruntime-osx-x64'
+      artifactName: 'onnxruntime-osx'
       targetPath: '$(Build.BinariesDirectory)/nuget-artifact'
 
   - task: DownloadPipelineArtifact@0
