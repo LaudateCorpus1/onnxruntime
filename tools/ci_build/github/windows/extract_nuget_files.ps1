@@ -41,25 +41,3 @@ foreach ($ort_dir in $ort_dirs)
   Rename-Item -Path $ort_dir -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\nuget-artifacts\$dirname  
 }
 
-cd $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo
-mkdir runtimes\win-x86\native
-mkdir runtimes\win10-arm\native
-mkdir runtimes\win10-arm64\native
-mkdir runtimes\linux-x64\native
-mkdir runtimes\linux-aarch64\native
-mkdir runtimes\osx.10.14-x64\native
-mkdir runtimes\osx.10.14-arm64\native
-cd nuget-artifacts
-Rename-Item -Path onnxruntime-win-x86\lib\onnxruntime.dll -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win-x86\native\onnxruntime.dll
-Rename-Item -Path onnxruntime-win-x86\lib\onnxruntime.lib -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win-x86\native\onnxruntime.lib
-Rename-Item -Path onnxruntime-win-x86\lib\onnxruntime.pdb -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win-x86\native\onnxruntime.pdb
-Rename-Item -Path onnxruntime-win-arm64\lib\onnxruntime.dll -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win10-arm64\native\onnxruntime.dll
-Rename-Item -Path onnxruntime-win-arm64\lib\onnxruntime.lib -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win10-arm64\native\onnxruntime.lib
-Rename-Item -Path onnxruntime-win-arm64\lib\onnxruntime.pdb -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win10-arm64\native\onnxruntime.pdb
-Rename-Item -Path onnxruntime-win-arm\lib\onnxruntime.dll -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win10-arm\native\onnxruntime.dll
-Rename-Item -Path onnxruntime-win-arm\lib\onnxruntime.lib -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win10-arm\native\onnxruntime.lib
-Rename-Item -Path onnxruntime-win-arm\lib\onnxruntime.pdb -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\win10-arm\native\onnxruntime.pdb
-Rename-Item -Path onnxruntime-linux-x64\lib\libonnxruntime.so.1* -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\linux-x64\native\libonnxruntime.so
-Rename-Item -Path onnxruntime-linux-aarch64\lib\libonnxruntime.so.1* -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\linux-aarch64\native\libonnxruntime.so
-Rename-Item -Path onnxruntime-osx-x64\lib\libonnxruntime.*.dylib -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\osx.10.14-x64\native\libonnxruntime.dylib
-Rename-Item -Path onnxruntime-osx-arm64\lib\libonnxruntime.*.dylib -NewName $Env:BUILD_BINARIESDIRECTORY\RelWithDebInfo\RelWithDebInfo\runtimes\osx.10.14-arm64\native\libonnxruntime.dylib
