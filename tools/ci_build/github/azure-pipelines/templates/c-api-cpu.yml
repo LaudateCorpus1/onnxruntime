@@ -197,13 +197,7 @@ jobs:
       configuration: RelWithDebInfo
       arguments: '--configuration RelWithDebInfo -t:CreatePackage -p:Platform="Any CPU" -p:OnnxRuntimeBuildDirectory="$(Build.BinariesDirectory)" -p:OrtPackageId=$(OrtPackageId) -p:IsReleaseBuild=${{ parameters.IsReleaseBuild }}'
       workingDirectory: '$(Build.SourcesDirectory)\csharp'
-
-  - task: BatchScript@1
-    displayName: 'Bundle Native NuGet and other binaries'
-    inputs:
-      filename: $(Build.SourcesDirectory)\tools\ci_build\github\windows\bundle_dlls.ps1
-      workingFolder: $(Build.BinariesDirectory)\RelWithDebInfo\RelWithDebInfo\nuget-artifacts
-
+  
   - task: CopyFiles@2
     displayName: 'Copy nuget packages to: $(Build.ArtifactStagingDirectory)'
     inputs:
@@ -224,12 +218,12 @@ jobs:
       FolderPath: '$(Build.ArtifactStagingDirectory)'
       DoEsrp: ${{ parameters.DoEsrp }}
 
-  - template: validate-nuget.yml
-    parameters:
-      NugetPath: '$(Build.ArtifactStagingDirectory)'
-      NugetPackage: 'Microsoft.ML.OnnxRuntime.*nupkg'
-      PlatformsSupported: 'win-x64,win-x86,linux-x64,linux-aarch64,osx.10.14-x64'
-      VerifyNugetSigning: false
+  # - template: validate-nuget.yml
+    # parameters:
+      # NugetPath: '$(Build.ArtifactStagingDirectory)'
+      # NugetPackage: 'Microsoft.ML.OnnxRuntime.*nupkg'
+      # PlatformsSupported: 'win-x64,win-x86,linux-x64,linux-aarch64,osx.10.14-x64'
+      # VerifyNugetSigning: false
 
   - task: PublishPipelineArtifact@0
     displayName: 'Publish Pipeline NuGet Artifact'

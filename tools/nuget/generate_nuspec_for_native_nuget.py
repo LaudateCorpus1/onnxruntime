@@ -4,7 +4,7 @@
 import argparse
 import sys
 import os
-
+from pathlib import Path
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="ONNX Runtime create nuget spec script "
@@ -369,7 +369,19 @@ def generate_files(list, args):
         files_list.append('<file src=' + '"' + os.path.join(args.native_build_path,
                           nuget_dependencies['cuda_ep_shared_lib']) +
                           runtimes_target + args.target_architecture + '\\native" />')
-
+    
+    if is_cpu_package or is_cuda_gpu_package:
+        for child in Path(args.native_build_path) / 'nuget-artifacts').iterdir():
+            for cpu_arch in ['x86', 'x64', 'arm', 'arm64']:
+                if child.name == 'onnxruntime-win-%s' % arch:
+                    files_list.append('<file src=' + '"' + child/'lib' / 'onnxruntime.dll' +
+                                   ' target="runtimes/win-%s/native/onnxruntime.dll"/>' % cpu_arch)
+                    files_list.append('<file src=' + '"' + child/'lib' / 'onnxruntime.pdb' +
+                                   ' target="runtimes/win-%s/native/onnxruntime.pdb"/>' % cpu_arch)
+                    files_list.append('<file src=' + '"' + child/'lib' / 'onnxruntime.lib' +
+                                   ' target="runtimes/win-%s/native/onnxruntime.lib"/>' % cpu_arch)
+            
+    
     # process all other library dependencies
     if is_cpu_package or is_cuda_gpu_package or is_dml_package or is_mklml_package:
         # Process dnnl dependency
