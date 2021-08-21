@@ -371,7 +371,8 @@ def generate_files(list, args):
                           runtimes_target + args.target_architecture + '\\native" />')
     
     if is_cpu_package or is_cuda_gpu_package:
-        for child in Path(args.native_build_path) / 'nuget-artifacts').iterdir():
+        nuget_artifacts_dir = Path(args.native_build_path) / 'nuget-artifacts')
+        for child in nuget_artifacts_dir.iterdir():
             for cpu_arch in ['x86', 'x64', 'arm', 'arm64']:
                 if child.name == 'onnxruntime-win-%s' % arch:
                     files_list.append('<file src=' + '"' + child/'lib' / 'onnxruntime.dll' +
