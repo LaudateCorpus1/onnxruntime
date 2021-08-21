@@ -209,7 +209,9 @@ jobs:
     displayName: 'Copy nuget packages to: $(Build.ArtifactStagingDirectory)'
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)\csharp\src\Microsoft.ML.OnnxRuntime\bin\RelWithDebInfo'
-      Contents: '*.nupkg'
+      Contents: |
+        '*.nupkg'
+        '*.snupkg'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - template: esrp_nuget.yml
@@ -231,11 +233,6 @@ jobs:
       artifactName: 'drop-signed-nuget-CPU'
       targetPath: '$(Build.ArtifactStagingDirectory)'
 
-  - powershell: |
-     $counter = 0
-     Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/*.nupkg | foreach {7z x -y -o$counter $_.fullname;$counter++}
-    workingDirectory: '$(Build.ArtifactStagingDirectory)'
-    displayName: 'Unzip files to sanitize the PE files'
 
   - task: DotNetCoreCLI@2
     displayName: 'Build C#'
@@ -246,11 +243,6 @@ jobs:
       configuration: RelWithDebInfo
       arguments: '--configuration RelWithDebInfo -p:Platform="Any CPU" -p:OnnxRuntimeBuildDirectory="$(Build.BinariesDirectory)" -p:OrtPackageId=$(OrtPackageId)'
       workingDirectory: '$(Build.SourcesDirectory)\csharp'
-
-  - task: BinSkim@4
-    displayName: 'Run BinSkim'
-    inputs:
-      AnalyzeTargetGlob: '$(Build.ArtifactStagingDirectory)\**.dll;$(Build.ArtifactStagingDirectory)\**.exe;$(Build.ArtifactStagingDirectory)\**.so'
 
   - task: RoslynAnalyzers@2
     displayName: 'Run Roslyn Analyzers'
